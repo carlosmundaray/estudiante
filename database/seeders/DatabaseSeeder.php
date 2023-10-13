@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Cursos;
+use App\Models\Estudiantes;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+       /* \App\Models\Cursos::factory(6)->create();
+        \App\Models\Estudiantes::factory(25)->create();*/
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        //Se crean 15 estudiantes
+        Estudiantes::factory()->times(15)->create();
+        //Se crean 8 cursos
+        Cursos::factory()->times(8)->create()->each(function($curso){
+            $curso->estudiante()->sync(
+                //Cada curso es tomado por 3 estudiantes
+                Estudiantes::all()->random(3)
+            );
+        });
+
+
+
     }
 }
